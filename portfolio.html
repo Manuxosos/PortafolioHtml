@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio | Dev & Security</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a0e;
+    --bg2: #0a1520;
+    --panel: #0d1f2d;
+    --border: #1a3a4a;
+    --accent: #00ffc8;
+    --accent2: #0af;
+    --accent3: #ff4d6d;
+    --java: #f89820;
+    --python: #3572a5;
+    --sec: #00ffc8;
+    --text: #c9d8e0;
+    --dim: #4a6475;
+    --glow: 0 0 20px rgba(0,255,200,0.25);
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-main: 'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* SCANLINES */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* GRID BG */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,200,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,200,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 60px 40px 40px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .terminal-prefix {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeIn 0.5s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    color: #fff;
+    opacity: 0;
+    animation: slideUp 0.6s 0.4s forwards;
+  }
+
+  .hero-name span {
+    color: var(--accent);
+    text-shadow: 0 0 30px rgba(0,255,200,0.5);
+  }
+
+  .hero-role {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--dim);
+    margin-top: 12px;
+    opacity: 0;
+    animation: fadeIn 0.5s 0.7s forwards;
+  }
+
+  .hero-role .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1em;
+    background: var(--accent);
+    margin-left: 4px;
+    animation: blink 1s infinite;
+    vertical-align: middle;
+  }
+
+  .status-panel {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--dim);
+    text-align: right;
+    opacity: 0;
+    animation: fadeIn 0.5s 1s forwards;
+  }
+
+  .status-line { margin-bottom: 4px; }
+  .status-ok { color: var(--accent); }
+  .status-warn { color: var(--java); }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(5,10,14,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .nav-btn {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    padding: 14px 20px;
+    color: var(--dim);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* MAIN */
+  main {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+
+  /* SECTIONS */
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 0.4s ease; }
+
+  .section-header {
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    background: rgba(0,255,200,0.08);
+    border: 1px solid rgba(0,255,200,0.2);
+    padding: 4px 10px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+  }
+
+  /* CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--card-color), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .card:hover {
+    border-color: var(--card-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+
+  .card:hover::before { opacity: 1; }
+
+  .card-lang {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    padding: 3px 8px;
+    border: 1px solid var(--card-color);
+    color: var(--card-color);
+    display: inline-block;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: 0.03em;
+  }
+
+  .card-desc {
+    font-size: 0.95rem;
+    color: var(--dim);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--dim);
+    background: rgba(255,255,255,0.04);
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+  }
+
+  .card-corner {
+    position: absolute;
+    bottom: 12px; right: 16px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--border);
+  }
+
+  /* ADD CARD */
+  .card-add {
+    border: 1px dashed var(--border);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 160px;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .card-add:hover {
+    border-color: var(--accent);
+    background: rgba(0,255,200,0.03);
+  }
+
+  .card-add .plus {
+    font-size: 2rem;
+    color: var(--dim);
+    transition: color 0.3s;
+  }
+
+  .card-add:hover .plus { color: var(--accent); }
+
+  .card-add span {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open { display: flex; animation: fadeIn 0.2s; }
+
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--accent);
+    width: 100%;
+    max-width: 520px;
+    padding: 32px;
+    box-shadow: 0 0 60px rgba(0,255,200,0.1);
+    position: relative;
+  }
+
+  .modal-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 24px;
+  }
+
+  .modal label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    margin-top: 16px;
+  }
+
+  .modal input, .modal textarea, .modal select {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .modal input:focus, .modal textarea:focus, .modal select:focus {
+    border-color: var(--accent);
+  }
+
+  .modal textarea { height: 80px; resize: vertical; }
+
+  .modal select option { background: var(--bg2); }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    font-weight: bold;
+  }
+
+  .btn-primary:hover { background: #00e6b3; }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--dim);
+  }
+
+  .btn-ghost:hover { border-color: var(--accent3); color: var(--accent3); }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+
+  .about-block {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 24px;
+  }
+
+  .about-block h3 {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+  }
+
+  .skill-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .skill-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.05em;
+  }
+
+  .skill-bar-wrap {
+    width: 60%;
+    height: 4px;
+    background: var(--border);
+  }
+
+  .skill-bar {
+    height: 100%;
+    background: var(--accent);
+    transition: width 1s ease;
+  }
+
+  .tip-box {
+    background: rgba(0,255,200,0.05);
+    border: 1px solid rgba(0,255,200,0.15);
+    border-left: 3px solid var(--accent);
+    padding: 16px;
+    margin-top: 24px;
+  }
+
+  .tip-box h4 {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 10px;
+  }
+
+  .tip-box p, .tip-box li {
+    font-size: 0.9rem;
+    color: var(--dim);
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+
+  .tip-box ul { padding-left: 16px; }
+
+  /* ANIMATIONS */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    header, main { padding: 30px 20px; }
+    nav { padding: 0 10px; }
+    .nav-btn { padding: 12px 12px; font-size: 0.7rem; }
+  }
+
+  .delete-btn {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: none;
+    border: none;
+    color: var(--dim);
+    font-size: 1rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s;
+  }
+  .card:hover .delete-btn { opacity: 1; }
+  .delete-btn:hover { color: var(--accent3); }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="terminal-prefix">// PORTFOLIO.SYS — v1.0.0</div>
+    <h1 class="hero-name">Manuel<span>Chicaiza</span></h1>
+    <p class="hero-role">Ciberseguridad &amp; Auditoria<span class="cursor"></span></p>
+  </div>
+  <div class="status-panel">
+    <div class="status-line"><span class="status-ok">● ONLINE</span> — sistema activo</div>
+    <div class="status-line"><span class="status-warn">⚡ Java</span> / <span style="color:var(--python)">⚡ Python</span> / <span class="status-ok">⚡ CyberSec</span></div>
+    <div class="status-line" id="clock" style="color:var(--dim)"></div>
+  </div>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showSection('java')">[ JAVA ]</button>
+  <button class="nav-btn" onclick="showSection('python')">[ PYTHON ]</button>
+  <button class="nav-btn" onclick="showSection('security')">[ SECURITY ]</button>
+  <button class="nav-btn" onclick="showSection('about')">[ ABOUT ]</button>
+</nav>
+
+<main>
+  <!-- JAVA -->
+  <section class="section active" id="section-java">
+    <div class="section-header">
+      <span class="section-label">JAVA</span>
+      <h2 class="section-title">Proyectos Java</h2>
+    </div>
+    <div class="cards-grid" id="grid-java">
+      <div class="card" style="--card-color: var(--java)">
+        <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
+        <span class="card-lang">Java</span>
+        <div class="card-title">Sistema de Gestión</div>
+        <div class="card-desc">Aplicación CRUD con base de datos y interfaz gráfica usando Swing.</div>
+        <div class="card-tags">
+          <span class="tag">Swing</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">JDBC</span>
+        </div>
+        <span class="card-corner">#001</span>
+      </div>
+      <div class="card" style="--card-color: var(--java)">
+        <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
+        <span class="card-lang">Java</span>
+        <div class="card-title">API REST Backend</div>
+        <div class="card-desc">API con Spring Boot para gestionar recursos con autenticación JWT.</div>
+        <div class="card-tags">
+          <span class="tag">Spring Boot</span>
+          <span class="tag">JWT</span>
+          <span class="tag">REST</span>
+        </div>
+        <span class="card-corner">#002</span>
+      </div>
+      <div class="card card-add" onclick="openModal('java')">
+        <div class="plus">+</div>
+        <span>AGREGAR PROYECTO</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PYTHON -->
+  <section class="section" id="section-python">
+    <div class="section-header">
+      <span class="section-label" style="color:var(--python);border-color:rgba(53,114,165,0.4);background:rgba(53,114,165,0.08)">PYTHON</span>
+      <h2 class="section-title">Proyectos Python</h2>
+    </div>
+    <div class="cards-grid" id="grid-python">
+      <div class="card" style="--card-color: var(--python)">
+        <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
+        <span class="card-lang" style="border-color:var(--python);color:var(--python)">Python</span>
+        <div class="card-title">Web Scraper</div>
+        <div class="card-desc">Extracción automatizada de datos de sitios web con análisis de resultados.</div>
+        <div class="card-tags">
+          <span class="tag">BeautifulSoup</span>
+          <span class="tag">Requests</span>
+          <span class="tag">Pandas</span>
+        </div>
+        <span class="card-corner">#001</span>
+      </div>
+      <div class="card" style="--card-color: var(--python)">
+        <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
+        <span class="card-lang" style="border-color:var(--python);color:var(--python)">Python</span>
+        <div class="card-title">Bot de Automatización</div>
+        <div class="card-desc">Script para automatizar tareas repetitivas con integración de APIs.</div>
+        <div class="card-tags">
+          <span class="tag">Selenium</span>
+          <span class="tag">API</span>
+          <span class="tag">Schedule</span>
+        </div>
+        <span class="card-corner">#002</span>
+      </div>
+      <div class="card card-add" onclick="openModal('python')">
+        <div class="plus">+</div>
+        <span>AGREGAR PROYECTO</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECURITY -->
+  <section class="section" id="section-security">
+    <div class="section-header">
+      <span class="section-label">SECURITY</span>
+      <h2 class="section-title">Ciberseguridad</h2>
+    </div>
+    <div class="cards-grid" id="grid-security">
+      <div class="card" style="--card-color: var(--sec)">
+        <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
+        <span class="card-lang">CyberSec</span>
+        <div class="card-title">Scanner de Puertos</div>
+        <div class="card-desc">Herramienta de reconocimiento de red para detectar puertos abiertos y servicios.</div>
+        <div class="card-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Nmap</span>
+          <span class="tag">Networking</span>
+        </div>
+        <span class="card-corner">#001</span>
+      </div>
+      <div class="card card-add" onclick="openModal('security')">
+        <div class="plus">+</div>
+        <span>AGREGAR PROYECTO</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="section-about">
+    <div class="section-header">
+      <span class="section-label">ABOUT</span>
+      <h2 class="section-title">Sobre el Portfolio</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-block">
+        <h3>// SKILLS</h3>
+        <div class="skill-row">
+          <span class="skill-name">Java</span>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:75%"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Python</span>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Networking</span>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:60%"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Pentesting</span>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:50%"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Linux</span>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:70%"></div></div>
+        </div>
+      </div>
+
+      <div class="about-block">
+        <h3>// CÓMO EXPANDIR ESTE PORTFOLIO</h3>
+        <ul style="padding-left:16px;color:var(--dim);font-size:0.9rem;line-height:1.8">
+          <li>Haz clic en <strong style="color:var(--accent)">+ AGREGAR PROYECTO</strong> en cualquier sección</li>
+          <li>Edita los proyectos de ejemplo con tus datos reales</li>
+          <li>Agrega una nueva categoría duplicando una sección en el HTML</li>
+          <li>Sube el archivo <code style="color:var(--accent)">portfolio.html</code> a GitHub Pages gratis</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip-box" style="margin-top:24px">
+      <h4>// MEJORES PRÁCTICAS — PORTFOLIO DE CIBERSEGURIDAD</h4>
+      <ul>
+        <li>🔐 <strong style="color:var(--text)">CTF Write-ups:</strong> Documenta cómo resolviste retos de Hack The Box, TryHackMe, PicoCTF.</li>
+        <li>🛠️ <strong style="color:var(--text)">Herramientas propias:</strong> Scripts de reconocimiento, análisis de logs, fuzzing.</li>
+        <li>📝 <strong style="color:var(--text)">Informes de vulnerabilidades:</strong> Muestra tu metodología (con entornos de prueba, nunca sistemas reales).</li>
+        <li>🎓 <strong style="color:var(--text)">Certificaciones:</strong> CompTIA Security+, CEH, eJPT, OSCP — agrega un apartado de certs.</li>
+        <li>🐙 <strong style="color:var(--text)">GitHub activo:</strong> Commitea regularmente. Los empleadores miran el historial de actividad.</li>
+        <li>🌐 <strong style="color:var(--text)">Hospedar gratis:</strong> GitHub Pages, Netlify o Vercel aceptan archivos HTML estáticos sin costo.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">// NUEVO PROYECTO</div>
+
+    <label>NOMBRE DEL PROYECTO</label>
+    <input type="text" id="m-name" placeholder="Mi Proyecto Épico">
+
+    <label>DESCRIPCIÓN</label>
+    <textarea id="m-desc" placeholder="Breve descripción de qué hace y por qué importa..."></textarea>
+
+    <label>TECNOLOGÍAS (separadas por comas)</label>
+    <input type="text" id="m-tags" placeholder="Python, Nmap, Bash">
+
+    <label>LINK (GitHub, etc.)</label>
+    <input type="text" id="m-link" placeholder="https://github.com/...">
+
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="saveProject()">GUARDAR</button>
+      <button class="btn btn-ghost" onclick="closeModal()">CANCELAR</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // CLOCK
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      now.toLocaleTimeString('es-EC', { hour12: false });
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // NAVIGATION
+  let currentSection = 'java';
+
+  function showSection(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('section-' + name).classList.add('active');
+    event.target.classList.add('active');
+    currentSection = name;
+  }
+
+  // MODAL
+  let activeCategory = 'java';
+
+  function openModal(cat) {
+    activeCategory = cat;
+    const labels = { java: 'JAVA', python: 'PYTHON', security: 'CYBERSEC' };
+    document.getElementById('modal-title').textContent = `// NUEVO PROYECTO — ${labels[cat] || cat.toUpperCase()}`;
+    document.getElementById('m-name').value = '';
+    document.getElementById('m-desc').value = '';
+    document.getElementById('m-tags').value = '';
+    document.getElementById('m-link').value = '';
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  const colors = {
+    java: 'var(--java)',
+    python: 'var(--python)',
+    security: 'var(--sec)'
+  };
+
+  const langLabels = {
+    java: 'Java',
+    python: 'Python',
+    security: 'CyberSec'
+  };
+
+  function saveProject() {
+    const name = document.getElementById('m-name').value.trim();
+    const desc = document.getElementById('m-desc').value.trim();
+    const tags = document.getElementById('m-tags').value.trim();
+    const link = document.getElementById('m-link').value.trim();
+
+    if (!name) { document.getElementById('m-name').focus(); return; }
+
+    const grid = document.getElementById('grid-' + activeCategory);
+    const addBtn = grid.querySelector('.card-add');
+
+    const count = grid.querySelectorAll('.card:not(.card-add)').length + 1;
+    const color = colors[activeCategory] || 'var(--accent)';
+    const lang = langLabels[activeCategory] || activeCategory.toUpperCase();
+    const tagStyle = activeCategory === 'python' ? `border-color:var(--python);color:var(--python)` : '';
+
+    const tagsHTML = tags
+      ? tags.split(',').map(t => `<span class="tag">${t.trim()}</span>`).join('')
+      : '';
+
+    const linkHTML = link
+      ? `<a href="${link}" target="_blank" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--accent);text-decoration:none;display:inline-block;margin-top:10px;letter-spacing:0.1em">→ VER PROYECTO</a>`
+      : '';
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.cssText = `--card-color: ${color}`;
+    card.innerHTML = `
+      <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
+      <span class="card-lang" style="${tagStyle}">${lang}</span>
+      <div class="card-title">${name}</div>
+      <div class="card-desc">${desc || 'Sin descripción.'}</div>
+      <div class="card-tags">${tagsHTML}</div>
+      ${linkHTML}
+      <span class="card-corner">#${String(count).padStart(3,'0')}</span>
+    `;
+
+    grid.insertBefore(card, addBtn);
+    closeModal();
+  }
+
+  function deleteCard(btn) {
+    if (confirm('¿Eliminar este proyecto?')) {
+      btn.closest('.card').remove();
+    }
+  }
+
+  // ENTER key for modal
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Enter' && document.getElementById('modal').classList.contains('open')) saveProject();
+  });
+</script>
+</body>
+</html>
