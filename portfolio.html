@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio | Dev & Security</title>
+<title>Portfolio | Manuel Chicaiza</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -16,11 +16,8 @@
     --accent2: #0af;
     --accent3: #ff4d6d;
     --java: #f89820;
-    --python: #3572a5;
-    --sec: #00ffc8;
     --text: #c9d8e0;
     --dim: #4a6475;
-    --glow: 0 0 20px rgba(0,255,200,0.25);
     --font-mono: 'Share Tech Mono', monospace;
     --font-main: 'Rajdhani', sans-serif;
   }
@@ -97,10 +94,7 @@
     animation: slideUp 0.6s 0.4s forwards;
   }
 
-  .hero-name span {
-    color: var(--accent);
-    text-shadow: 0 0 30px rgba(0,255,200,0.5);
-  }
+  .hero-name span { color: var(--accent); text-shadow: 0 0 30px rgba(0,255,200,0.5); }
 
   .hero-role {
     font-family: var(--font-mono);
@@ -131,8 +125,8 @@
   }
 
   .status-line { margin-bottom: 4px; }
-  .status-ok { color: var(--accent); }
-  .status-warn { color: var(--java); }
+  .status-ok  { color: var(--accent); }
+  .status-warn{ color: var(--java); }
 
   /* NAV */
   nav {
@@ -152,7 +146,7 @@
     font-family: var(--font-mono);
     font-size: 0.8rem;
     letter-spacing: 0.1em;
-    padding: 14px 20px;
+    padding: 14px 24px;
     color: var(--dim);
     cursor: pointer;
     border: none;
@@ -202,7 +196,28 @@
     letter-spacing: 0.05em;
   }
 
-  /* CARDS GRID */
+  /* DIVIDER */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 56px 0 52px;
+    position: relative;
+  }
+
+  .section-divider::after {
+    content: '◆';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--bg);
+    color: var(--accent);
+    font-size: 0.75rem;
+    padding: 0 14px;
+    opacity: 0.4;
+  }
+
+  /* Grideo de tarjetas */
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -216,7 +231,7 @@
     position: relative;
     overflow: hidden;
     transition: all 0.3s;
-    cursor: pointer;
+    cursor: default;
   }
 
   .card::before {
@@ -287,7 +302,7 @@
     color: var(--border);
   }
 
-  /* ADD CARD */
+  /* Agregar */
   .card-add {
     border: 1px dashed var(--border);
     background: transparent;
@@ -301,24 +316,315 @@
     cursor: pointer;
   }
 
-  .card-add:hover {
-    border-color: var(--accent);
-    background: rgba(0,255,200,0.03);
-  }
-
-  .card-add .plus {
-    font-size: 2rem;
-    color: var(--dim);
-    transition: color 0.3s;
-  }
-
+  .card-add:hover { border-color: var(--accent); background: rgba(0,255,200,0.03); }
+  .card-add .plus { font-size: 2rem; color: var(--dim); transition: color 0.3s; }
   .card-add:hover .plus { color: var(--accent); }
+  .card-add span { font-family: var(--font-mono); font-size: 0.75rem; color: var(--dim); letter-spacing: 0.1em; }
 
-  .card-add span {
+  /*Quitar */
+  .delete-btn {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: none;
+    border: none;
+    color: var(--dim);
+    font-size: 1rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s;
+  }
+  .card:hover .delete-btn { opacity: 1; }
+  .delete-btn:hover { color: var(--accent3); }
+
+  /*EXPERIENCIA */
+  .exp-timeline {
+    position: relative;
+    padding-left: 36px;
+  }
+
+  .exp-timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 4px;
+    bottom: 20px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent) 0%, var(--border) 60%, transparent 100%);
+  }
+
+  .exp-item {
+    position: relative;
+    margin-bottom: 28px;
+  }
+
+  .exp-item:last-child { margin-bottom: 0; }
+
+  .exp-dot {
+    position: absolute;
+    left: -30px;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--accent);
+    background: var(--bg);
+    transform: rotate(45deg);
+  }
+
+  .exp-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 26px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .exp-card:hover {
+    border-color: rgba(248,152,32,0.5);
+    box-shadow: 0 4px 24px rgba(248,152,32,0.08);
+  }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .exp-company {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.03em;
+  }
+
+  .exp-period {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--java);
+    background: rgba(248,152,32,0.1);
+    border: 1px solid rgba(248,152,32,0.3);
+    padding: 3px 10px;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .exp-role {
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: var(--dim);
+    color: var(--accent);
     letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+
+  .exp-location {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--dim);
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
+
+  .exp-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .exp-list li {
+    font-size: 0.9rem;
+    color: var(--dim);
+    padding: 5px 0 5px 18px;
+    position: relative;
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .exp-list li:last-child { border-bottom: none; }
+
+  .exp-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.7rem;
+    top: 6px;
+  }
+
+  /* SOBRE MÍ SECTION */
+  .about-profile {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 28px;
+    margin-bottom: 28px;
+  }
+
+  .about-profile h3 {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    margin-bottom: 14px;
+  }
+
+  .about-profile p {
+    font-size: 0.95rem;
+    color: var(--dim);
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+
+  .about-profile p:last-child { margin-bottom: 0; }
+
+  .about-values {
+    margin-top: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; } }
+
+  .about-block {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 24px;
+  }
+
+  .about-block h3 {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 18px;
+  }
+
+  /* SKILLS */
+  .skill-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .skill-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.05em;
+  }
+
+  .skill-bar-wrap {
+    width: 58%;
+    height: 4px;
+    background: var(--border);
+  }
+
+  .skill-bar {
+    height: 100%;
+    background: var(--accent);
+    transition: width 1s ease;
+  }
+
+  .skill-bar.java { background: var(--java); }
+
+  /* EDUCATION */
+  .edu-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .edu-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .edu-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .edu-inst {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+    margin-bottom: 5px;
+  }
+
+  .edu-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    padding: 2px 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .badge-active { background: rgba(0,255,200,0.08); border: 1px solid rgba(0,255,200,0.3); color: var(--accent); }
+  .badge-cert   { background: rgba(248,152,32,0.1); border: 1px solid rgba(248,152,32,0.3); color: var(--java); }
+  .badge-done   { background: rgba(74,100,117,0.15); border: 1px solid var(--border); color: var(--dim); }
+
+  /* OBJECTIVE */
+  .objective-block {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--java);
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+
+  .objective-block h3 {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--java);
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+  }
+
+  .objective-block p {
+    font-size: 0.95rem;
+    color: var(--dim);
+    line-height: 1.7;
+  }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 14px;
+  }
+
+  .contact-item {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    transition: border-color 0.2s;
+  }
+
+  .contact-item:hover { border-color: var(--accent); }
+
+  .contact-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+  }
+
+  .contact-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    word-break: break-all;
   }
 
   /* MODAL */
@@ -363,7 +669,7 @@
     margin-top: 16px;
   }
 
-  .modal input, .modal textarea, .modal select {
+  .modal input, .modal textarea {
     width: 100%;
     background: var(--bg);
     border: 1px solid var(--border);
@@ -375,19 +681,10 @@
     transition: border-color 0.2s;
   }
 
-  .modal input:focus, .modal textarea:focus, .modal select:focus {
-    border-color: var(--accent);
-  }
-
+  .modal input:focus, .modal textarea:focus { border-color: var(--accent); }
   .modal textarea { height: 80px; resize: vertical; }
 
-  .modal select option { background: var(--bg2); }
-
-  .modal-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-  }
+  .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
 
   .btn {
     font-family: var(--font-mono);
@@ -399,318 +696,289 @@
     transition: all 0.2s;
   }
 
-  .btn-primary {
-    background: var(--accent);
-    color: #000;
-    font-weight: bold;
-  }
-
+  .btn-primary { background: var(--accent); color: #000; font-weight: bold; }
   .btn-primary:hover { background: #00e6b3; }
-
-  .btn-ghost {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--dim);
-  }
-
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--dim); }
   .btn-ghost:hover { border-color: var(--accent3); color: var(--accent3); }
 
-  /* ABOUT */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-
-  @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
-
-  .about-block {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    padding: 24px;
-  }
-
-  .about-block h3 {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    margin-bottom: 16px;
-  }
-
-  .skill-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-
-  .skill-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: 0.05em;
-  }
-
-  .skill-bar-wrap {
-    width: 60%;
-    height: 4px;
-    background: var(--border);
-  }
-
-  .skill-bar {
-    height: 100%;
-    background: var(--accent);
-    transition: width 1s ease;
-  }
-
-  .tip-box {
-    background: rgba(0,255,200,0.05);
-    border: 1px solid rgba(0,255,200,0.15);
-    border-left: 3px solid var(--accent);
-    padding: 16px;
-    margin-top: 24px;
-  }
-
-  .tip-box h4 {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    margin-bottom: 10px;
-  }
-
-  .tip-box p, .tip-box li {
-    font-size: 0.9rem;
-    color: var(--dim);
-    line-height: 1.6;
-    margin-bottom: 6px;
-  }
-
-  .tip-box ul { padding-left: 16px; }
-
   /* ANIMATIONS */
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
   @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  @keyframes blink   { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
   /* RESPONSIVE */
   @media (max-width: 600px) {
     header, main { padding: 30px 20px; }
     nav { padding: 0 10px; }
-    .nav-btn { padding: 12px 12px; font-size: 0.7rem; }
+    .nav-btn { padding: 12px 14px; font-size: 0.72rem; }
+    .exp-timeline { padding-left: 26px; }
+    .exp-dot { left: -22px; }
   }
-
-  .delete-btn {
-    position: absolute;
-    top: 10px; right: 10px;
-    background: none;
-    border: none;
-    color: var(--dim);
-    font-size: 1rem;
-    cursor: pointer;
-    opacity: 0;
-    transition: all 0.2s;
-  }
-  .card:hover .delete-btn { opacity: 1; }
-  .delete-btn:hover { color: var(--accent3); }
 </style>
 </head>
 <body>
 
 <header>
   <div>
-    <div class="terminal-prefix">// PORTFOLIO.SYS — v1.0.0</div>
+    <div class="terminal-prefix">// PORTFOLIO.SYS — v2.0.0</div>
     <h1 class="hero-name">Manuel<span>Chicaiza</span></h1>
-    <p class="hero-role">Ciberseguridad &amp; Auditoria<span class="cursor"></span></p>
+    <p class="hero-role">Java Developer &amp; Cybersecurity<span class="cursor"></span></p>
   </div>
   <div class="status-panel">
     <div class="status-line"><span class="status-ok">● ONLINE</span> — sistema activo</div>
-    <div class="status-line"><span class="status-warn">⚡ Java</span> / <span style="color:var(--python)">⚡ Python</span> / <span class="status-ok">⚡ CyberSec</span></div>
+    <div class="status-line"><span class="status-warn">⚡ Java</span> / <span class="status-ok">⚡ CyberSec</span> / <span style="color:var(--accent2)">⚡ ISO 27001</span></div>
     <div class="status-line" id="clock" style="color:var(--dim)"></div>
   </div>
 </header>
 
 <nav>
-  <button class="nav-btn active" onclick="showSection('java')">[ JAVA ]</button>
-  <button class="nav-btn" onclick="showSection('python')">[ PYTHON ]</button>
-  <button class="nav-btn" onclick="showSection('security')">[ SECURITY ]</button>
-  <button class="nav-btn" onclick="showSection('about')">[ ABOUT ]</button>
+  <button class="nav-btn active" onclick="showSection('home', this)">[ PORTAFOLIO ]</button>
+  <button class="nav-btn" onclick="showSection('about', this)">[ SOBRE MÍ ]</button>
 </nav>
 
 <main>
-  <!-- JAVA -->
-  <section class="section active" id="section-java">
+
+  <!-- ============================
+       SECCIÓN PRINCIPAL: JAVA + EXPERIENCIA
+  ============================= -->
+  <section class="section active" id="section-home">
+
+    <!-- PROYECTOS JAVA -->
     <div class="section-header">
       <span class="section-label">JAVA</span>
       <h2 class="section-title">Proyectos Java</h2>
     </div>
+
     <div class="cards-grid" id="grid-java">
+
       <div class="card" style="--card-color: var(--java)">
         <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
         <span class="card-lang">Java</span>
-        <div class="card-title">Sistema de Gestión</div>
-        <div class="card-desc">Aplicación CRUD con base de datos y interfaz gráfica usando Swing.</div>
+        <div class="card-title">Sistema de Gestión de Inventario de Bebidas</div>
+        <div class="card-desc">Sistema POS de escritorio desarrollado en Java para el bar del Centro de Arte Contemporáneo Huasy Cuy. Registro de ventas, gestión de stock con alertas y cálculo de vuelto en tiempo real.</div>
         <div class="card-tags">
+          <span class="tag">Java 25</span>
+          <span class="tag">SQLite</span>
+          <span class="tag">JavaSwing</span>
+          <span class="tag">POO</span>
+        </div>
+        <span class="card-corner">#001</span>
+      </div>
+
+      <div class="card" style="--card-color: var(--java)">
+        <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
+        <span class="card-lang">Java</span>
+        <div class="card-title">CyberMonitor</div>
+        <div class="card-desc">Aplicación cliente-servidor desarrollada en Java para capturar y transmitir en tiempo real la pantalla de múltiples equipos hacia un servidor centralizado.</div>
+        <div class="card-tags">
+          <span class="tag">Java SE</span>
+          <span class="tag">Sockets TCP</span>
           <span class="tag">Swing</span>
-          <span class="tag">MySQL</span>
-          <span class="tag">JDBC</span>
-        </div>
-        <span class="card-corner">#001</span>
-      </div>
-      <div class="card" style="--card-color: var(--java)">
-        <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
-        <span class="card-lang">Java</span>
-        <div class="card-title">API REST Backend</div>
-        <div class="card-desc">API con Spring Boot para gestionar recursos con autenticación JWT.</div>
-        <div class="card-tags">
-          <span class="tag">Spring Boot</span>
-          <span class="tag">JWT</span>
-          <span class="tag">REST</span>
         </div>
         <span class="card-corner">#002</span>
       </div>
-      <div class="card card-add" onclick="openModal('java')">
+
+      <div class="card card-add" onclick="openModal()">
         <div class="plus">+</div>
         <span>AGREGAR PROYECTO</span>
       </div>
-    </div>
-  </section>
 
-  <!-- PYTHON -->
-  <section class="section" id="section-python">
+    </div>
+
+    <!-- DIVISOR -->
+    <div class="section-divider"></div>
+
+    <!-- EXPERIENCIA PROFESIONAL -->
     <div class="section-header">
-      <span class="section-label" style="color:var(--python);border-color:rgba(53,114,165,0.4);background:rgba(53,114,165,0.08)">PYTHON</span>
-      <h2 class="section-title">Proyectos Python</h2>
+      <span class="section-label">EXPERIENCIA</span>
+      <h2 class="section-title">Experiencia Profesional</h2>
     </div>
-    <div class="cards-grid" id="grid-python">
-      <div class="card" style="--card-color: var(--python)">
-        <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
-        <span class="card-lang" style="border-color:var(--python);color:var(--python)">Python</span>
-        <div class="card-title">Web Scraper</div>
-        <div class="card-desc">Extracción automatizada de datos de sitios web con análisis de resultados.</div>
-        <div class="card-tags">
-          <span class="tag">BeautifulSoup</span>
-          <span class="tag">Requests</span>
-          <span class="tag">Pandas</span>
+
+    <div class="exp-timeline">
+
+      <!-- JOB 1 -->
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div class="exp-card">
+          <div class="exp-header">
+            <div class="exp-company">CAC Huasy Cuy</div>
+            <span class="exp-period">2018 — ACTUAL</span>
+          </div>
+          <div class="exp-role">// ASISTENTE TÉCNICO Y ADMINISTRATIVO</div>
+          <div class="exp-location">📍 Cayambe, Ecuador</div>
+          <ul class="exp-list">
+            <li>Mantenimiento preventivo y correctivo de equipos de computación y soporte de red.</li>
+            <li>Desarrollo de sistema POS en Java: registro de ventas con selección por categorías, descuento automático de stock y registro en base de datos.</li>
+            <li>Gestión de inventario completa con búsqueda, filtros y alertas por nivel de stock (agregar, editar y desactivar bebidas).</li>
+            <li>Ajuste de stock con registro de entradas/salidas manuales e historial de movimientos por bebida.</li>
+            <li>Cálculo de vuelto en tiempo real con validación de monto recibido en pagos en efectivo.</li>
+          </ul>
         </div>
-        <span class="card-corner">#001</span>
       </div>
-      <div class="card" style="--card-color: var(--python)">
-        <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
-        <span class="card-lang" style="border-color:var(--python);color:var(--python)">Python</span>
-        <div class="card-title">Bot de Automatización</div>
-        <div class="card-desc">Script para automatizar tareas repetitivas con integración de APIs.</div>
-        <div class="card-tags">
-          <span class="tag">Selenium</span>
-          <span class="tag">API</span>
-          <span class="tag">Schedule</span>
+
+      <!-- JOB 2 -->
+      <div class="exp-item">
+        <div class="exp-dot"></div>
+        <div class="exp-card">
+          <div class="exp-header">
+            <div class="exp-company">Villa Roma Resort Catskills</div>
+            <span class="exp-period">2023 — 2024</span>
+          </div>
+          <div class="exp-role">// MESERO &amp; ADMINISTRADOR PRINCIPAL — DINING ROOM</div>
+          <div class="exp-location">📍 Nueva York, EE.UU &nbsp;·&nbsp; Programa de intercambio J1 — Agencia Ovlex</div>
+          <ul class="exp-list">
+            <li>Atención exclusiva y personalizada a más de 40 comensales con apoyo de un asistente en restaurante de cocina italiana.</li>
+            <li>Comunicación fluida con clientes internacionales en inglés.</li>
+            <li>Gestión eficiente de tiempos de atención y coordinación con cocina.</li>
+            <li>Experiencia internacional que fortaleció las habilidades de trabajo bajo presión y comunicación.</li>
+          </ul>
         </div>
-        <span class="card-corner">#002</span>
       </div>
-      <div class="card card-add" onclick="openModal('python')">
-        <div class="plus">+</div>
-        <span>AGREGAR PROYECTO</span>
-      </div>
+
     </div>
   </section>
 
-  <!-- SECURITY -->
-  <section class="section" id="section-security">
-    <div class="section-header">
-      <span class="section-label">SECURITY</span>
-      <h2 class="section-title">Ciberseguridad</h2>
-    </div>
-    <div class="cards-grid" id="grid-security">
-      <div class="card" style="--card-color: var(--sec)">
-        <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
-        <span class="card-lang">CyberSec</span>
-        <div class="card-title">Scanner de Puertos</div>
-        <div class="card-desc">Herramienta de reconocimiento de red para detectar puertos abiertos y servicios.</div>
-        <div class="card-tags">
-          <span class="tag">Python</span>
-          <span class="tag">Nmap</span>
-          <span class="tag">Networking</span>
-        </div>
-        <span class="card-corner">#001</span>
-      </div>
-      <div class="card card-add" onclick="openModal('security')">
-        <div class="plus">+</div>
-        <span>AGREGAR PROYECTO</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
+  <!-- ============================
+       SECCIÓN: SOBRE MÍ
+  ============================= -->
   <section class="section" id="section-about">
+
     <div class="section-header">
-      <span class="section-label">ABOUT</span>
-      <h2 class="section-title">Sobre el Portfolio</h2>
+      <span class="section-label">PERFIL</span>
+      <h2 class="section-title">Sobre Mí</h2>
     </div>
 
+    <!-- Descripción personal -->
+    <div class="about-profile">
+      <h3>// DESCRIPCIÓN PERSONAL</h3>
+      <p>Desarrollador con base sólida en Programación Java (POO), desarrollo web y ciberseguridad. Con estudios en Java, PHP y tecnologías web (HTML, CSS), complementados con una visión de seguridad en software adquirida mediante certificaciones como CEH y Auditor Interno ISO 27001:2022.</p>
+      <p>Proactivo, autodidacta y con experiencia internacional que reforzó mis habilidades de comunicación en inglés y trabajo bajo presión.</p>
+      <div class="about-values">// Valores: &nbsp;Ética &nbsp;·&nbsp; Honradez &nbsp;·&nbsp; Honestidad &nbsp;·&nbsp; Empatía</div>
+    </div>
+
+    <!-- Skills + Educación -->
     <div class="about-grid">
+
       <div class="about-block">
-        <h3>// SKILLS</h3>
+        <h3>// HABILIDADES TÉCNICAS</h3>
         <div class="skill-row">
-          <span class="skill-name">Java</span>
+          <span class="skill-name">Java (POO)</span>
+          <div class="skill-bar-wrap"><div class="skill-bar java" style="width:80%"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">SQL / PostgreSQL</span>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:70%"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">PHP / Web (HTML, CSS)</span>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:55%"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">CEH / ISO 27001</span>
           <div class="skill-bar-wrap"><div class="skill-bar" style="width:75%"></div></div>
         </div>
         <div class="skill-row">
-          <span class="skill-name">Python</span>
-          <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+          <span class="skill-name">Inglés</span>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:90%"></div></div>
         </div>
         <div class="skill-row">
-          <span class="skill-name">Networking</span>
-          <div class="skill-bar-wrap"><div class="skill-bar" style="width:60%"></div></div>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">Pentesting</span>
-          <div class="skill-bar-wrap"><div class="skill-bar" style="width:50%"></div></div>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">Linux</span>
-          <div class="skill-bar-wrap"><div class="skill-bar" style="width:70%"></div></div>
+          <span class="skill-name">Redes / Soporte IT</span>
+          <div class="skill-bar-wrap"><div class="skill-bar" style="width:65%"></div></div>
         </div>
       </div>
 
       <div class="about-block">
-        <h3>// CÓMO EXPANDIR ESTE PORTFOLIO</h3>
-        <ul style="padding-left:16px;color:var(--dim);font-size:0.9rem;line-height:1.8">
-          <li>Haz clic en <strong style="color:var(--accent)">+ AGREGAR PROYECTO</strong> en cualquier sección</li>
-          <li>Edita los proyectos de ejemplo con tus datos reales</li>
-          <li>Agrega una nueva categoría duplicando una sección en el HTML</li>
-          <li>Sube el archivo <code style="color:var(--accent)">portfolio.html</code> a GitHub Pages gratis</li>
-        </ul>
+        <h3>// EDUCACIÓN Y CERTIFICACIONES</h3>
+
+        <div class="edu-item">
+          <div class="edu-title">Tecnólogo en Ciberseguridad</div>
+          <div class="edu-inst">ITECSUR</div>
+          <span class="edu-badge badge-active">● EN CURSO</span>
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-title">Ethical Hacker (CEH)</div>
+          <div class="edu-inst">TUTORIAS EC</div>
+          <span class="edu-badge badge-cert">✓ CERTIFICADO</span>
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-title">Auditor / Implementor ISO 27001:2022</div>
+          <div class="edu-inst">TUTORIAS EC</div>
+          <span class="edu-badge badge-cert">✓ CERTIFICADO</span>
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-title">Fundamentación BIG DATA</div>
+          <div class="edu-inst">Servicio Ecuatoriano de Capacitación Profesional (SECAP)</div>
+          <span class="edu-badge badge-done">COMPLETADO</span>
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-title">Tecnología en Desarrollo de Software</div>
+          <div class="edu-inst">Instituto Superior Tecnológico Quito</div>
+          <span class="edu-badge badge-done">CURSADO</span>
+        </div>
+
       </div>
     </div>
 
-    <div class="tip-box" style="margin-top:24px">
-      <h4>// MEJORES PRÁCTICAS — PORTFOLIO DE CIBERSEGURIDAD</h4>
-      <ul>
-        <li>🔐 <strong style="color:var(--text)">CTF Write-ups:</strong> Documenta cómo resolviste retos de Hack The Box, TryHackMe, PicoCTF.</li>
-        <li>🛠️ <strong style="color:var(--text)">Herramientas propias:</strong> Scripts de reconocimiento, análisis de logs, fuzzing.</li>
-        <li>📝 <strong style="color:var(--text)">Informes de vulnerabilidades:</strong> Muestra tu metodología (con entornos de prueba, nunca sistemas reales).</li>
-        <li>🎓 <strong style="color:var(--text)">Certificaciones:</strong> CompTIA Security+, CEH, eJPT, OSCP — agrega un apartado de certs.</li>
-        <li>🐙 <strong style="color:var(--text)">GitHub activo:</strong> Commitea regularmente. Los empleadores miran el historial de actividad.</li>
-        <li>🌐 <strong style="color:var(--text)">Hospedar gratis:</strong> GitHub Pages, Netlify o Vercel aceptan archivos HTML estáticos sin costo.</li>
-      </ul>
+    <!-- Objetivo profesional -->
+    <div class="objective-block">
+      <h3>// OBJETIVO PROFESIONAL</h3>
+      <p>Incorporarme a un equipo de desarrollo de software donde pueda ampliar y fortalecer mis conocimientos en Java y desarrollo web, aportando además una perspectiva de seguridad informática que agrega valor extra al ciclo de vida del software. Busco crecer profesionalmente en un entorno dinámico que potencie mis habilidades técnicas y personales.</p>
     </div>
+
+    <!-- Contacto -->
+    <div class="section-header">
+      <span class="section-label">CONTACTO</span>
+      <h2 class="section-title" style="font-size:1.5rem">Información de Contacto</h2>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-item">
+        <span class="contact-label">📧 E-MAIL</span>
+        <span class="contact-value">ericsoni154@gmail.com</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">📱 TELÉFONO</span>
+        <span class="contact-value">0963115090</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">📍 UBICACIÓN</span>
+        <span class="contact-value">Quito, Ecuador</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">🌐 IDIOMAS</span>
+        <span class="contact-value">Español · Inglés 90%</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">🎂 FECHA NAC.</span>
+        <span class="contact-value">15 de Mayo del 2000</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">🌍 NACIONALIDAD</span>
+        <span class="contact-value">Ecuatoriana</span>
+      </div>
+    </div>
+
   </section>
+
 </main>
 
-<!-- MODAL -->
+<!-- MODAL AGREGAR PROYECTO -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
-    <div class="modal-title" id="modal-title">// NUEVO PROYECTO</div>
+    <div class="modal-title">// NUEVO PROYECTO JAVA</div>
 
     <label>NOMBRE DEL PROYECTO</label>
-    <input type="text" id="m-name" placeholder="Mi Proyecto Épico">
+    <input type="text" id="m-name" placeholder="Mi Proyecto Java">
 
     <label>DESCRIPCIÓN</label>
     <textarea id="m-desc" placeholder="Breve descripción de qué hace y por qué importa..."></textarea>
 
     <label>TECNOLOGÍAS (separadas por comas)</label>
-    <input type="text" id="m-tags" placeholder="Python, Nmap, Bash">
+    <input type="text" id="m-tags" placeholder="Java, SQLite, Swing">
 
     <label>LINK (GitHub, etc.)</label>
     <input type="text" id="m-link" placeholder="https://github.com/...">
@@ -723,7 +991,7 @@
 </div>
 
 <script>
-  // CLOCK
+  // RELOJ
   function updateClock() {
     const now = new Date();
     document.getElementById('clock').textContent =
@@ -732,28 +1000,20 @@
   setInterval(updateClock, 1000);
   updateClock();
 
-  // NAVIGATION
-  let currentSection = 'java';
-
-  function showSection(name) {
+  // NAVEGACIÓN
+  function showSection(name, btn) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('section-' + name).classList.add('active');
-    event.target.classList.add('active');
-    currentSection = name;
+    btn.classList.add('active');
   }
 
   // MODAL
-  let activeCategory = 'java';
-
-  function openModal(cat) {
-    activeCategory = cat;
-    const labels = { java: 'JAVA', python: 'PYTHON', security: 'CYBERSEC' };
-    document.getElementById('modal-title').textContent = `// NUEVO PROYECTO — ${labels[cat] || cat.toUpperCase()}`;
-    document.getElementById('m-name').value = '';
-    document.getElementById('m-desc').value = '';
-    document.getElementById('m-tags').value = '';
-    document.getElementById('m-link').value = '';
+  function openModal() {
+    document.getElementById('m-name').value  = '';
+    document.getElementById('m-desc').value  = '';
+    document.getElementById('m-tags').value  = '';
+    document.getElementById('m-link').value  = '';
     document.getElementById('modal').classList.add('open');
   }
 
@@ -765,18 +1025,6 @@
     if (e.target === this) closeModal();
   });
 
-  const colors = {
-    java: 'var(--java)',
-    python: 'var(--python)',
-    security: 'var(--sec)'
-  };
-
-  const langLabels = {
-    java: 'Java',
-    python: 'Python',
-    security: 'CyberSec'
-  };
-
   function saveProject() {
     const name = document.getElementById('m-name').value.trim();
     const desc = document.getElementById('m-desc').value.trim();
@@ -785,13 +1033,9 @@
 
     if (!name) { document.getElementById('m-name').focus(); return; }
 
-    const grid = document.getElementById('grid-' + activeCategory);
+    const grid   = document.getElementById('grid-java');
     const addBtn = grid.querySelector('.card-add');
-
-    const count = grid.querySelectorAll('.card:not(.card-add)').length + 1;
-    const color = colors[activeCategory] || 'var(--accent)';
-    const lang = langLabels[activeCategory] || activeCategory.toUpperCase();
-    const tagStyle = activeCategory === 'python' ? `border-color:var(--python);color:var(--python)` : '';
+    const count  = grid.querySelectorAll('.card:not(.card-add)').length + 1;
 
     const tagsHTML = tags
       ? tags.split(',').map(t => `<span class="tag">${t.trim()}</span>`).join('')
@@ -803,10 +1047,10 @@
 
     const card = document.createElement('div');
     card.className = 'card';
-    card.style.cssText = `--card-color: ${color}`;
+    card.style.cssText = '--card-color: var(--java)';
     card.innerHTML = `
       <button class="delete-btn" onclick="deleteCard(this)" title="Eliminar">✕</button>
-      <span class="card-lang" style="${tagStyle}">${lang}</span>
+      <span class="card-lang">Java</span>
       <div class="card-title">${name}</div>
       <div class="card-desc">${desc || 'Sin descripción.'}</div>
       <div class="card-tags">${tagsHTML}</div>
@@ -819,12 +1063,10 @@
   }
 
   function deleteCard(btn) {
-    if (confirm('¿Eliminar este proyecto?')) {
-      btn.closest('.card').remove();
-    }
+    if (confirm('¿Eliminar este proyecto?')) btn.closest('.card').remove();
   }
 
-  // ENTER key for modal
+  // TECLADO
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeModal();
     if (e.key === 'Enter' && document.getElementById('modal').classList.contains('open')) saveProject();
